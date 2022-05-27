@@ -1,0 +1,17 @@
+<div>
+  <h1>rooms</h1>
+  <label for="search-bar">search rooms</label>
+  <input type="text" id="search-bar"></input>
+  <button type="button" id="search"> search </button>
+
+  {{#each data}}
+  <br>
+  <!-- <button class="user-info" id="user-button">User Info</button> -->
+  <div class="room-list">
+    <p>{{this.id}}: {{this.date}}, {{this.name}}, <a href="">message</a></p>
+  </div>
+  {{/each}}
+
+  <p><a href="#">make a new room</a></p>
+
+</div>

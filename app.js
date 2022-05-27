@@ -26,8 +26,17 @@ app.get('/friends', function(req, res){
   union
   select userID2 as userID, roomID from friends where userID1 = 4;`
 
-  db.pool.query(query, function(error, rows, fields){    // Execute the query
-    res.render('friends', {data: rows});                  // Render the index.hbs file, and also send the renderer
+  db.pool.query(query, function(error, rows, fields){
+    res.render('friends', {data: rows});
+  })
+});
+
+
+app.get('/rooms', function(req, res){
+  let query = "select id, name, DATE_FORMAT(creationDate,'%m-%d-%y') as date from rooms order by id asc;"
+
+  db.pool.query(query, function(error, rows, fields){
+    res.render('rooms', {data: rows});
   })
 });
 

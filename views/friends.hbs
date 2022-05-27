@@ -1,0 +1,43 @@
+<div>
+  <h1>friends list</h1>
+  <div class="chat-container">
+    <label for="chat-box"></label>
+    <input type="text" id="chat-box"></input>
+    <button type="button" id="send-chat" class="send-button">search</button>
+  </div>
+  <br>
+
+  {{!-- Create a table --}}
+<table>
+    {{!-- Header section --}}
+    <thead>
+        {{!-- For just the first row, we print each key of the row object as a header cell so we
+        know what each column means when the page renders --}}
+        <tr>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+            <th>direct message</th>
+        </tr>
+    </thead>
+
+    {{!-- Body section --}}
+    <tbody>
+        {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
+        {{#each data}}
+        <tr>
+            <td>{{this.userID}}</td>
+            <td>{{this.roomID}}</td>
+            <td><a href="">message</a></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+
+
+  <p><a href="">manage friends</a></p>
+
+</div>

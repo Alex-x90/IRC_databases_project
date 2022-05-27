@@ -1,0 +1,25 @@
+{
+  "name": "irc_database",
+  "version": "1.0.0",
+  "description": "Internet relay chat application for cd340",
+  "main": "app.js",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "mysql": "^2.18.1",
+    "node-ini": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alex-x90/IRC_databases_project.git"
+  },
+  "author": "Sasha and Joe",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Alex-x90/IRC_databases_project/issues"
+  },
+  "homepage": "https://github.com/Alex-x90/IRC_databases_project#readme"
+}

@@ -45,6 +45,23 @@ app.get('/rooms', function(req, res){
 });
 
 
+app.get('/newfriends', function(req, res){
+  // let query = "select id, name, DATE_FORMAT(creationDate,'%m-%d-%y') as date from rooms order by id asc;"
+  res.render('newfriends');
+  // db.pool.query(query, function(error, rows, fields){
+  //   res.render('newfriends', {data: rows});
+  // })
+});
+
+app.get('/newrooms', function(req, res){
+  // let query = "select id, name, DATE_FORMAT(creationDate,'%m-%d-%y') as date from rooms order by id asc;"
+  res.render('newrooms');
+  // db.pool.query(query, function(error, rows, fields){
+  //   res.render('newfriends', {data: rows});
+  // })
+});
+
+
 
 app.get('*', function (req, res) {
   res.status(404).render('404', {

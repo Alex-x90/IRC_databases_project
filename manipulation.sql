@@ -9,7 +9,7 @@ select userID2 as userID, roomID from friends where userID1 = $myUserId;
 delete from friends where (userID1 = $myUserId and userID2 = $notFriend) or (userID2 = $myUserId and userID1 = $notFriend);
 
 -- get rooms
-select name, creationDate from rooms order by creationDate asc;
+select id, name, DATE_FORMAT(creationDate,'%m-%d-%y') as date from rooms order by id asc;
 
 -- search for room by name
 select name, creationDate from rooms where name like '%$searchString%' order by creationDate asc;

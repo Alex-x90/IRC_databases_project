@@ -2,16 +2,18 @@
     SETUP
 */
 // Express
-var express = require('express');   // We are using the express library for the web server
-var app     = express();            // We need to instantiate an express object to interact with the server in our code
-PORT        = 65423;                 // Set a port number at the top so it's easy to change in the future
+var express = require('express');           // We are using the express library for the web server
+var app     = express();                    // We need to instantiate an express object to interact with the server in our code
+PORT        = parseInt(process.argv[2]);    // Get port from command line arg
 // Handlebars
 const { engine } = require('express-handlebars');
 var exphbs = require('express-handlebars');     // Import express-handlebars
 app.engine('.hbs', engine({extname: ".hbs"}));  // Create an instance of the handlebars engine to process templates
 app.set('view engine', '.hbs');                 // Tell express to use the handlebars engine whenever it encounters a *.hbs file.
-
+// setup static files
 app.use(express.static('public'));
+
+app.use(express.json())
 
 // Database
 var db = require('./database/db-connector')
@@ -40,6 +42,14 @@ app.get('/rooms', function(req, res){
   db.pool.query(query, function(error, rows, fields){
     res.render('rooms', {data: rows});
   })
+});
+
+
+
+app.get('*', function (req, res) {
+  res.status(404).render('404', {
+    page: req.url
+  });
 });
 
 /*

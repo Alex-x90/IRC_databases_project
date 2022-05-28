@@ -2,7 +2,9 @@
 var mysql = require('mysql')
 var ini = require('node-ini');
 
-var config = ini.parseSync('../../.my.cnf');
+var config = ini.parseSync(require('os').homedir()+'/.my.cnf');
+
+
 
 // Create a 'connection pool' using the provided credentials
 var pool = mysql.createPool({

@@ -13,7 +13,8 @@ app.set('view engine', '.hbs');                 // Tell express to use the handl
 // setup static files
 app.use(express.static('public'));
 
-app.use(express.json())
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 
 // Database
 var db = require('./database/db-connector')
@@ -69,7 +70,20 @@ app.get('/users', function(req, res){
   // })
 });
 
+app.post('/create_newroom', function(req, res){
+  let data = req.body;
+  console.log(req.body.room_name);
+  res.status(400);
+  if(!data['room_name']){
+    res.status(400);
+  }
 
+  db.pool.query(
+    `insert into rooms (name, creationDate) values (?, now());`,[data['room_name']]
+    ,function(error, rows, fields){
+    res.redirect("/rooms");
+  })
+});
 
 app.get('*', function (req, res) {
   res.status(404).render('404', {

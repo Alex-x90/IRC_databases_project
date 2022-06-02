@@ -2,11 +2,11 @@
 
     <div>
         <h1>make a new room</h1>
-        <p> new room name: </p>
-        <input type="text"></input>
-    </div>
-    <div>
-        <button type="button">make room</button>
+        <form id="create_newroom" method="POST" action="/create_newroom">
+          <label for="room_name">Room Name: </label>
+          <input type="text" name="room_name" id="room_name">
+          <input type="submit">
+        </form>
     </div>
 
 </div>

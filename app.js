@@ -23,7 +23,7 @@ var db = require('./database/db-connector')
     ROUTES
 */
 app.get('/', function(req, res){
-  res.render('index');                    // Note the call to render() and not send(). Using render() ensures the templating engine
+  res.render('index');
 });
 
 app.get('/friends', function(req, res){
@@ -47,50 +47,37 @@ app.get('/rooms', function(req, res){
 
 
 app.get('/newfriends', function(req, res){
-  // let query = "select id, name, DATE_FORMAT(creationDate,'%m-%d-%y') as date from rooms order by id asc;"
   res.render('newfriends');
-  // db.pool.query(query, function(error, rows, fields){
-  //   res.render('newfriends', {data: rows});
-  // })
 });
 
 app.get('/newrooms', function(req, res){
-  // let query = "select id, name, DATE_FORMAT(creationDate,'%m-%d-%y') as date from rooms order by id asc;"
   res.render('newrooms');
-  // db.pool.query(query, function(error, rows, fields){
-  //   res.render('newfriends', {data: rows});
-  // })
 });
 
 app.get('/users', function(req, res){
-  // let query = "select id, name, DATE_FORMAT(creationDate,'%m-%d-%y') as date from rooms order by id asc;"
-  res.render('users');
-  // db.pool.query(query, function(error, rows, fields){
-  //   res.render('newfriends', {data: rows});
-  // })
+  let query = "select id, username, email from users where id = 4;"
+
+  db.pool.query(query, function(error, rows, fields){
+    res.render('users', {data: rows});
+  })
 });
 
 app.get('/newaccount', function(req, res){
-  // let query = "select id, name, DATE_FORMAT(creationDate,'%m-%d-%y') as date from rooms order by id asc;"
   res.render('newaccount');
-  // db.pool.query(query, function(error, rows, fields){
-  //   res.render('newfriends', {data: rows});
-  // })
 });
 
 app.post('/create_newroom', function(req, res){
   let data = req.body;
-  console.log(req.body.room_name);
-  res.status(400);
-  if(!data['room_name']){
-    res.status(400);
-  }
 
-  db.pool.query(
-    `insert into rooms (name, creationDate) values (?, now());`,[data['room_name']]
-    ,function(error, rows, fields){
-    res.redirect("/rooms");
-  })
+  if(!req.body.room_name.length){
+    res.sendStatus(400);
+  }else{
+    db.pool.query(
+      `insert into rooms (name, creationDate) values (?, now());`,[data['room_name']]
+      ,function(error, rows, fields){
+      res.redirect("/rooms");
+    })
+  }
 });
 
 app.get('*', function (req, res) {

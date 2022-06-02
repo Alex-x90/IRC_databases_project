@@ -70,6 +70,14 @@ app.get('/users', function(req, res){
   // })
 });
 
+app.get('/newaccount', function(req, res){
+  // let query = "select id, name, DATE_FORMAT(creationDate,'%m-%d-%y') as date from rooms order by id asc;"
+  res.render('newaccount');
+  // db.pool.query(query, function(error, rows, fields){
+  //   res.render('newfriends', {data: rows});
+  // })
+});
+
 app.post('/create_newroom', function(req, res){
   let data = req.body;
   console.log(req.body.room_name);

@@ -1,22 +1,22 @@
 
     <div>
         <h1>user info</h1>
-        <p>ID number: #12345</p>
+        <p>ID number: #{{data.[0].id}}</p>
 
         <div>
-            <p> account name: useraccountname</p>
+            <p> account name: {{data.[0].username}}</p>
             <input type="text"></input>
             <button type="button">change</button>
         </div>
         <div>
-            <p> account email: user@gmail.com</p>
+            <p> account email: {{data.[0].email}}</p>
             <input type="text"></input>
             <button type="button">change</button>
         </div>
 
-        <div>
-            <p>make a new account: </p>
-            <button type="button">make new account</button>
-        </div>
+        <br>
+        <form action="/newaccount">
+            <input type="submit" value="Make a new account"/>
+        </form>
 
     </div>

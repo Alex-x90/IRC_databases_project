@@ -1,19 +1,20 @@
 <div>
 
     <div>
-        <h1>make a new account</h1>
-        <p> account name: </p>
-        <input type="text"></input>
-        <p> password: </p>
-        <input type="text"></input>
-        <p> email: </p>
-        <input type="text"></input>
-    </div>
+        <h1>Make a new account</h1>
 
-    <br>
-
-    <div>
-        <button type="button">make account</button>
+        <form id="create_newroom" method="POST" action="/create_new_user">
+          <label for="account_name">Account Name: </label>
+          <input type="text" name="account_name" id="account_name">
+          <br>
+          <label for="password">Password: </label>
+          <input type="text" name="password" id="password">
+          <br>
+          <label for="email">Email: </label>
+          <input type="text" name="email" id="email">
+          <br>
+          <input type="submit" value="Make account"/>
+        </form>
     </div>
 
 </div>

@@ -19,6 +19,9 @@ app.use(express.urlencoded({extended: true}));
 // Database
 var db = require('./database/db-connector')
 
+// SHA256 for encoding passwords
+var shajs = require('sha.js')
+
 /*
     ROUTES
 */
@@ -66,7 +69,21 @@ app.get('/newaccount', function(req, res){
   res.render('newaccount');
 });
 
-app.post('/create_newroom', function(req, res){
+app.post('/create_new_user', function(req, res){
+  let data = req.body;
+
+  if(!req.body.account_name.length || !req.body.password.length || !req.body.email.length){
+    res.sendStatus(400);
+  }else{
+    db.pool.query(
+      `insert into users (username, email, password) values (?, ?, ?);`,[data['account_name'], data['email'], shajs('sha256').update(data['password']).digest('hex')]
+      ,function(error, rows, fields){
+      res.redirect("/users");
+    })
+  }
+});
+
+app.post('/create_new_room', function(req, res){
   let data = req.body;
 
   if(!req.body.room_name.length){

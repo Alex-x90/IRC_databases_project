@@ -55,9 +55,27 @@ app.post('/rooms', function(req, res){
   db.pool.query(
     `select id, name, DATE_FORMAT(creationDate,'%m-%d-%y') as creationDate from rooms where name like ? order by id asc;`, [`%${data['room_name']}%`],
     function(error, rows, fields){
-      if(error)
-        console.log(error)
       res.render('rooms', {data: rows});
+  })
+});
+
+app.post('/search_users_name', function(req, res){
+  let data = req.body;
+
+  db.pool.query(
+    `select id, username from users where username like ? order by username asc;`, [`%${data['username']}%`],
+    function(error, rows, fields){
+      res.render('newfriends', {data: rows});
+  })
+});
+
+app.post('/search_users_id', function(req, res){
+  let data = req.body;
+
+  db.pool.query(
+    `select id, username from users where users.id = ? order by username asc;`, [data['id']],
+    function(error, rows, fields){
+      res.render('newfriends', {data: rows});
   })
 });
 

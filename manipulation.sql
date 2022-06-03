@@ -1,18 +1,21 @@
 -- Special character $ will be used to represent variables received from the backend programming
 
 -- get other friend and roomID for each friendship a person has (somehow combined result to be sorted alphabetically)
-select userID1 as userID, roomID from friends where userID2 = $myUserId
-union
-select userID2 as userID, roomID from friends where userID1 = $myUserId;
+select * from(
+  select userID1 as userID, roomID from friends where userID2 = $myUserId
+  union
+  select userID2 as userID, roomID from friends where userID1 = $myUserId
+)friends
+inner join users on users.id = friends.userID;
 
 -- remove a friend (should this also delete the corresponding room and mesages?)
 delete from friends where (userID1 = $myUserId and userID2 = $notFriend) or (userID2 = $myUserId and userID1 = $notFriend);
 
 -- get rooms
-select id, name, DATE_FORMAT(creationDate,'%m-%d-%y') as date from rooms order by id asc;
+select id, name, DATE_FORMAT(creationDate,'%m-%d-%y') as creationDate from rooms order by id asc;
 
 -- search for room by name
-select name, creationDate from rooms where name like '%$searchString%' order by creationDate asc;
+select name, creationDate from rooms where name like '%$searchString%' order by id asc;
 
 -- search for user by name
 select username from users where username like '%$searchString%' order by username asc;

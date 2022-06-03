@@ -14,12 +14,11 @@
         {{!-- For just the first row, we print each key of the row object as a header cell so we
         know what each column means when the page renders --}}
         <tr>
-            {{#each data.[0]}}
-            <th>
-                {{@key}}
-            </th>
-            {{/each}}
+            <th>userID</th>
+            <th>roomID</th>
+            <th>username</th>
             <th>direct message</th>
+            <th>remove friend</th>
         </tr>
     </thead>
 
@@ -30,7 +29,9 @@
         <tr>
             <td>{{this.userID}}</td>
             <td>{{this.roomID}}</td>
+            <td>{{this.username}}</td>
             <td><a href="">message</a></td>
+            <td><a href="">remove</a></td>
         </tr>
         {{/each}}
     </tbody>

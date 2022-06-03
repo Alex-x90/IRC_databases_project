@@ -30,9 +30,10 @@ app.get('/', function(req, res){
 });
 
 app.get('/friends', function(req, res){
-  let query = `select userID1 as userID, roomID from friends where userID2 = 4
+  let query = `select * from (select userID1 as userID, roomID from friends where userID2 = 4
   union
-  select userID2 as userID, roomID from friends where userID1 = 4;`
+  select userID2 as userID, roomID from friends where userID1 = 4) friends
+  inner join users on users.id = friends.userID;`
 
   db.pool.query(query, function(error, rows, fields){
     res.render('friends', {data: rows});
@@ -48,6 +49,17 @@ app.get('/rooms', function(req, res){
   })
 });
 
+app.post('/rooms', function(req, res){
+  let data = req.body;
+
+  db.pool.query(
+    `select id, name, DATE_FORMAT(creationDate,'%m-%d-%y') as creationDate from rooms where name like ? order by id asc;`, [`%${data['room_name']}%`],
+    function(error, rows, fields){
+      if(error)
+        console.log(error)
+      res.render('rooms', {data: rows});
+  })
+});
 
 app.get('/newfriends', function(req, res){
   res.render('newfriends');
@@ -76,8 +88,8 @@ app.post('/create_new_user', function(req, res){
     res.sendStatus(400);
   }else{
     db.pool.query(
-      `insert into users (username, email, password) values (?, ?, ?);`,[data['account_name'], data['email'], shajs('sha256').update(data['password']).digest('hex')]
-      ,function(error, rows, fields){
+      `insert into users (username, email, password) values (?, ?, ?);`,[data['account_name'], data['email'], shajs('sha256').update(data['password']).digest('hex')],
+      function(error, rows, fields){
       res.redirect("/users");
     })
   }

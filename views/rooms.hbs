@@ -1,8 +1,11 @@
 <div>
   <h1>rooms</h1>
-  <label for="search-bar">search rooms</label>
-  <input type="text" id="search-bar"></input>
-  <button type="button" id="search"> search </button>
+
+  <form id="search_rooms" method="POST" action="/rooms">
+    <label for="room_name">Room Name: </label>
+    <input type="text" name="room_name" id="room_name">
+    <input type="submit" value="search"/>
+  </form>
 
   {{!-- Create a table --}}
   <table>

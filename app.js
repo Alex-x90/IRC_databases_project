@@ -41,7 +41,7 @@ app.get('/friends', function(req, res){
 
 
 app.get('/rooms', function(req, res){
-  let query = "select id, name, DATE_FORMAT(creationDate,'%m-%d-%y') as date from rooms order by id asc;"
+  let query = "select id, name, DATE_FORMAT(creationDate,'%m-%d-%y') as creationDate from rooms order by id asc;"
 
   db.pool.query(query, function(error, rows, fields){
     res.render('rooms', {data: rows});

@@ -4,13 +4,35 @@
   <input type="text" id="search-bar"></input>
   <button type="button" id="search"> search </button>
 
-  {{#each data}}
-  <br>
-  <!-- <button class="user-info" id="user-button">User Info</button> -->
-  <div class="room-list">
-    <p>{{this.id}}: {{this.date}}, {{this.name}}, <a href="room">message</a></p>
-  </div>
-  {{/each}}
+  {{!-- Create a table --}}
+  <table>
+    {{!-- Header section --}}
+    <thead>
+        {{!-- For just the first row, we print each key of the row object as a header cell so we
+        know what each column means when the page renders --}}
+        <tr>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+            <th>Message</th>
+        </tr>
+    </thead>
+
+    {{!-- Body section --}}
+    <tbody>
+        {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
+        {{#each data}}
+        <tr>
+            <td>{{this.id}}</td>
+            <td>{{this.name}}</td>
+            <td>{{this.creationDate}}</td>
+            <td><a href="">message</a></td>
+        </tr>
+        {{/each}}
+    </tbody>
+  </table>
 
   <p><a href="/newrooms">make a new room</a></p>
 

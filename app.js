@@ -59,28 +59,48 @@ app.post('/rooms', function(req, res){
   })
 });
 
-app.post('/search_users_name', function(req, res){
-  let data = req.body;
-
-  db.pool.query(
-    `select id, username from users where username like ? order by username asc;`, [`%${data['username']}%`],
-    function(error, rows, fields){
-      res.render('newfriends', {data: rows});
-  })
-});
-
-app.post('/search_users_id', function(req, res){
-  let data = req.body;
-
-  db.pool.query(
-    `select id, username from users where users.id = ? order by username asc;`, [data['id']],
-    function(error, rows, fields){
-      res.render('newfriends', {data: rows});
-  })
-});
-
 app.get('/newfriends', function(req, res){
   res.render('newfriends');
+});
+
+app.post('/newfriends', function(req, res){
+  let data = req.body;
+
+  if(data.hasOwnProperty("id") && data.id.length){
+    db.pool.query(
+      `select id, username from users where users.id = ? order by username asc;`, [data['id']],
+      function(error, rows, fields){
+        res.render('newfriends', {data: rows});
+    })
+  }else{
+    db.pool.query(
+      `select id, username from users where username like ? order by username asc;`, [`%${data['username']}%`],
+      function(error, rows, fields){
+        res.render('newfriends', {data: rows});
+    })
+  }
+});
+
+// TODO: uniqueness constraint for when userID1 and userID2 are swapped
+app.post('/add_friend', function(req, res){
+  let data = req.body;
+
+  db.pool.query(
+    `insert into rooms (name, creationDate) values ("Private message", now());
+    insert into friends (userID1, userID2, roomID) values (4, ?, LAST_INSERT_ID());`, [data['id']],
+    function(error, rows, fields){
+      res.redirect('/friends');
+  })
+});
+
+app.post('/remove_friend', function(req, res){
+  let data = req.body;
+
+  db.pool.query(
+    `delete from friends where (userID1 = 4 and userID2 = ?) or (userID2 = 4 and userID1 = ?);`, [data['userID'], data['userID']],
+    function(error, rows, fields){
+      res.redirect('/friends');
+  })
 });
 
 app.get('/newrooms', function(req, res){
@@ -137,5 +157,5 @@ app.get('*', function (req, res) {
 LISTENER
 */
 app.listen(PORT, function(){            // This is the basic syntax for what is called the 'listener' which receives incoming requests on the specified PORT.
-  console.log('Express started on http://localhost:' + PORT + '; press Ctrl-C to terminate.')
+  console.log('Express started on http://flip2.engr.oregonstate.edu:' + PORT + ' ; press Ctrl-C to terminate.')
 });

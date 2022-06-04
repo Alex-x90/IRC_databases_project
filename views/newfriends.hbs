@@ -1,13 +1,13 @@
 <div>
     <h1>Add friends</h1>
 
-    <form id="search_users_name" method="POST" action="/search_users_name">
+    <form id="search_users_name" method="POST" action="/newfriends">
       <label for="username">Username: </label>
       <input type="text" name="username" id="username">
       <input type="submit" value="search"/>
     </form>
 
-    <form id="search_users_id" method="POST" action="/search_users_id">
+    <form id="search_users_id" method="POST" action="/newfriends">
       <label for="id">ID:</label>
       <input type="text" name="id" id="id">
       <input type="submit" value="search"/>
@@ -34,7 +34,12 @@
             <tr>
                 <td>{{this.id}}</td>
                 <td>{{this.username}}</td>
-                <td><a href="">add</a></td>
+                <td>
+                  <form class="add_friend" method="POST" action="/add_friend">
+                    <input type="hidden" name="id" class="id" value="{{this.id}}"/>
+                    <input type="submit" value="add"/>
+                  </form>
+                </td>
             </tr>
             {{/each}}
         </tbody>

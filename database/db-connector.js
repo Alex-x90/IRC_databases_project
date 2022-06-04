@@ -12,7 +12,8 @@ var pool = mysql.createPool({
     host            : config.client.host,
     user            : config.client.user,
     password        : config.client.password,
-    database        : config.client.database
+    database        : config.client.database,
+    multipleStatements: true
 })
 
 // Export it for use in our application

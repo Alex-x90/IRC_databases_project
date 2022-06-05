@@ -5,13 +5,19 @@
 
         <div>
             <p> account name: {{data.[0].username}}</p>
-            <input type="text"></input>
-            <button type="button">change</button>
+            <form class="change_username" method="POST" action="/change_username">
+              <input type="text" name="username" id="username"/>
+              <input type="hidden" name="userID" class="userID" value="{{data.[0].id}}"/>
+              <input type="submit" value="change"/>
+            </form>
         </div>
         <div>
             <p> account email: {{data.[0].email}}</p>
-            <input type="text"></input>
-            <button type="button">change</button>
+            <form class="change_email" method="POST" action="/change_email">
+              <input type="text" name="email" id="email"/>
+              <input type="hidden" name="userID" class="userID" value="{{data.[0].id}}"/>
+              <input type="submit" value="change"/>
+            </form>
         </div>
 
         <br>

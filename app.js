@@ -93,6 +93,7 @@ app.post('/add_friend', function(req, res){
   })
 });
 
+// TODO: either delete corresponding room, or make it so add_friend can grab old room if it exists
 app.post('/remove_friend', function(req, res){
   let data = req.body;
 
@@ -112,6 +113,26 @@ app.get('/users', function(req, res){
 
   db.pool.query(query, function(error, rows, fields){
     res.render('users', {data: rows});
+  })
+});
+
+app.post('/change_username', function(req, res){
+  let data = req.body;
+
+  db.pool.query(
+    `update users set username = ? where id = ?;`, [data['username'], data['userID']],
+    function(error, rows, fields){
+      res.redirect('/users');
+  })
+});
+
+app.post('/change_email', function(req, res){
+  let data = req.body;
+
+  db.pool.query(
+    `update users set email = ? where id = ?;`, [data['email'], data['userID']],
+    function(error, rows, fields){
+      res.redirect('/users');
   })
 });
 

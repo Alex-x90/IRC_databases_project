@@ -51,6 +51,7 @@ app.get('/rooms', function(req, res){
   })
 });
 
+// search rooms by name
 app.post('/rooms', function(req, res){
   let data = req.body;
 
@@ -65,9 +66,11 @@ app.get('/newfriends', function(req, res){
   res.render('newfriends');
 });
 
+// search friends either by name, or by specific ID
 app.post('/newfriends', function(req, res){
   let data = req.body;
 
+  // if id exists, search by it. Otherwise search by username (which if blank, lists all users to add)
   if(data.hasOwnProperty("id") && data.id.length){
     db.pool.query(
       `select id, username from users where users.id = ? order by username asc;`, [data['id']],
@@ -87,6 +90,7 @@ app.post('/newfriends', function(req, res){
 app.post('/add_friend', function(req, res){
   let data = req.body;
 
+  // create new private message room and create new friend relationship
   db.pool.query(
     `insert into rooms (name, creationDate) values ("Private message", now());
     insert into friends (userID1, userID2, roomID) values (?, ?, LAST_INSERT_ID());`, [Math.min(data['id'], currentUser), Math.max(data['id'], currentUser)],
@@ -145,6 +149,7 @@ app.get('/newaccount', function(req, res){
 app.post('/create_new_user', function(req, res){
   let data = req.body;
 
+  // only create new user if account name, password, and email were entered.
   if(!req.body.account_name.length || !req.body.password.length || !req.body.email.length){
     res.sendStatus(400);
   }else{
@@ -159,6 +164,7 @@ app.post('/create_new_user', function(req, res){
 app.post('/create_new_room', function(req, res){
   let data = req.body;
 
+  // only create room if a name was entered
   if(!req.body.room_name.length){
     res.sendStatus(400);
   }else{

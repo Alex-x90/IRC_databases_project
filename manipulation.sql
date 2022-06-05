@@ -1,6 +1,6 @@
 -- Special character $ will be used to represent variables received from the backend programming
 
--- get other friend and roomID for each friendship a person has (somehow combined result to be sorted alphabetically)
+-- get other friend and roomID for each friendship a person has
 select * from(
   select userID1 as userID, roomID from friends where userID2 = $myUserId
   union
@@ -9,7 +9,7 @@ select * from(
 inner join users on users.id = friends.userID;
 
 -- remove a friend (should this also delete the corresponding room and mesages?)
--- userID1 is min of $myUserId and $friendUserId, while userID2 is max of those two IDs
+-- $userID1 is min of $myUserId and $friendUserId, while $userID2 is max of those two IDs
 delete from friends where userID1 = $userID1 and userID2 = $userID2;
 
 -- get rooms
@@ -45,7 +45,7 @@ insert into rooms (name, creationDate) values ($newRoomName, now());
 -- send a message
 insert into messages (message, userID, roomID, timestamp) values ($msg, $myUserId, $roomId, now());
 
--- get messages from room for specific scroll amount
+-- get messages from room for specific scroll amount (this is an ideal, our implementation likely won't be advanced enough to have dynamic loading like this)
 select message, userID, timestamp from messages where (id between $startPageMsgId and $endPageMsgId) and roomID = $roomId
 order by timestamp asc;
 
@@ -54,7 +54,7 @@ insert into users (username, email, password) values ($username, $email, $hashed
 
 -- add a friend
 insert into rooms (name, creationDate) values ("Private message", now());
--- userID1 is min of $myUserId and $friendUserId, while userID2 is max of those two IDs
+-- $userID1 is min of $myUserId and $friendUserId, while $userID2 is max of those two IDs
 insert into friends (userID1, userID2, roomID) values ($userID1, $userID2, LAST_INSERT_ID());
 
 -- things to think about, what happens if a user is deleted? Can rooms be deleted? Can messages/rooms be edited?

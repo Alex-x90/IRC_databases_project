@@ -1,3 +1,5 @@
+// current user hardcode for example purposes
+const currentUser = 4;
 /*
     SETUP
 */
@@ -30,9 +32,9 @@ app.get('/', function(req, res){
 });
 
 app.get('/friends', function(req, res){
-  let query = `select * from (select userID1 as userID, roomID from friends where userID2 = 4
+  let query = `select * from (select userID1 as userID, roomID from friends where userID2 = ${currentUser}
   union
-  select userID2 as userID, roomID from friends where userID1 = 4) friends
+  select userID2 as userID, roomID from friends where userID1 = ${currentUser}) friends
   inner join users on users.id = friends.userID;`
 
   db.pool.query(query, function(error, rows, fields){
@@ -87,7 +89,7 @@ app.post('/add_friend', function(req, res){
 
   db.pool.query(
     `insert into rooms (name, creationDate) values ("Private message", now());
-    insert into friends (userID1, userID2, roomID) values (4, ?, LAST_INSERT_ID());`, [data['id']],
+    insert into friends (userID1, userID2, roomID) values (?, ?, LAST_INSERT_ID());`, [Math.min(data['id'], currentUser), Math.max(data['id'], currentUser)],
     function(error, rows, fields){
       res.redirect('/friends');
   })
@@ -98,7 +100,7 @@ app.post('/remove_friend', function(req, res){
   let data = req.body;
 
   db.pool.query(
-    `delete from friends where (userID1 = 4 and userID2 = ?) or (userID2 = 4 and userID1 = ?);`, [data['userID'], data['userID']],
+    `delete from friends where userID1 = ? and userID2 = ?;`, [Math.min(data['userID'], currentUser), Math.max(data['userID'], currentUser)],
     function(error, rows, fields){
       res.redirect('/friends');
   })
@@ -109,7 +111,7 @@ app.get('/newrooms', function(req, res){
 });
 
 app.get('/users', function(req, res){
-  let query = "select id, username, email from users where id = 4;"
+  let query = `select id, username, email from users where id = ${currentUser};`
 
   db.pool.query(query, function(error, rows, fields){
     res.render('users', {data: rows});

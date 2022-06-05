@@ -9,7 +9,8 @@ select * from(
 inner join users on users.id = friends.userID;
 
 -- remove a friend (should this also delete the corresponding room and mesages?)
-delete from friends where (userID1 = $myUserId and userID2 = $notFriend) or (userID2 = $myUserId and userID1 = $notFriend);
+-- userID1 is min of $myUserId and $friendUserId, while userID2 is max of those two IDs
+delete from friends where userID1 = $userID1 and userID2 = $userID2;
 
 -- get rooms
 select id, name, DATE_FORMAT(creationDate,'%m-%d-%y') as creationDate from rooms order by id asc;
@@ -53,6 +54,7 @@ insert into users (username, email, password) values ($username, $email, $hashed
 
 -- add a friend
 insert into rooms (name, creationDate) values ("Private message", now());
-insert into friends (userID1, userID2, roomID) values ($myUserId, $friendUserId, LAST_INSERT_ID());
+-- userID1 is min of $myUserId and $friendUserId, while userID2 is max of those two IDs
+insert into friends (userID1, userID2, roomID) values ($userID1, $userID2, LAST_INSERT_ID());
 
 -- things to think about, what happens if a user is deleted? Can rooms be deleted? Can messages/rooms be edited?

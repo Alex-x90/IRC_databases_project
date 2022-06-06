@@ -31,6 +31,7 @@ app.get('/', function(req, res){
   res.render('index');
 });
 
+// shows list of all friends
 app.get('/friends', function(req, res){
   let query = `select * from (select userID1 as userID, roomID from friends where userID2 = ${currentUser}
   union
@@ -42,6 +43,7 @@ app.get('/friends', function(req, res){
   })
 });
 
+// shows friends who match search query
 app.post('/friends', function(req, res){
   let data = req.body;
 
@@ -54,7 +56,7 @@ app.post('/friends', function(req, res){
     })
 });
 
-
+// show all rooms that aren't private messages
 app.get('/rooms', function(req, res){
   let query = `select id, name, DATE_FORMAT(creationDate,'%m-%d-%y') as creationDate from rooms where name <> "Private message" order by id asc;`
 
@@ -98,7 +100,7 @@ app.post('/newfriends', function(req, res){
   }
 });
 
-// TODO: uniqueness constraint for when userID1 and userID2 are swapped
+// add a new friend
 app.post('/add_friend', function(req, res){
   let data = req.body;
 
@@ -111,7 +113,7 @@ app.post('/add_friend', function(req, res){
   })
 });
 
-// TODO: either delete corresponding room, or make it so add_friend can grab old room if it exists
+// remove a friend. also removes private message room as well as messages in the room
 app.post('/remove_friend', function(req, res){
   let data = req.body;
 
@@ -126,6 +128,7 @@ app.get('/newrooms', function(req, res){
   res.render('newrooms');
 });
 
+// show current user information
 app.get('/users', function(req, res){
   let query = `select id, username, email from users where id = ${currentUser};`
 
@@ -134,6 +137,7 @@ app.get('/users', function(req, res){
   })
 });
 
+// update username
 app.post('/change_username', function(req, res){
   let data = req.body;
 
@@ -144,6 +148,7 @@ app.post('/change_username', function(req, res){
   })
 });
 
+// update email
 app.post('/change_email', function(req, res){
   let data = req.body;
 
@@ -158,6 +163,7 @@ app.get('/newaccount', function(req, res){
   res.render('newaccount');
 });
 
+// create a new user
 app.post('/create_new_user', function(req, res){
   let data = req.body;
 
@@ -173,6 +179,7 @@ app.post('/create_new_user', function(req, res){
   }
 });
 
+// create a new room
 app.post('/create_new_room', function(req, res){
   let data = req.body;
 
@@ -188,6 +195,7 @@ app.post('/create_new_room', function(req, res){
   }
 });
 
+// show messages in a specific room
 app.get('/room/:id', function(req, res){
   var id = req.params.id;
 
@@ -202,12 +210,14 @@ app.get('/room/:id', function(req, res){
   })
 });
 
+// create new message in room
 app.post('/room', function(req, res){
   let data = req.body;
 
   db.pool.query(
     `insert into messages (message, userID, roomID, timestamp) values (?, ?, ?, now()); `, [data['message'], currentUser, data['roomID']]
      ,function(error, rows, fields){
+      // we couldn't find a more elegant way to hand the roomID inside the anonymous function besides a new query
       db.pool.query(`select roomID from messages where id = ?;`,[rows.insertId], function(error, rows, fields){
         res.redirect("/room/" + rows[0]['roomID']);
       })

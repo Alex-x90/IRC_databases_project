@@ -181,11 +181,12 @@ app.get('/room/:id', function(req, res){
   let data = req.body; 
 
   db.pool.query(
-    `select message, userID, timestamp from messages where roomID = ?
-    inner join users on users.id = messages.userID
+    `select * from(select message, userID, timestamp from messages where roomID = ?) temp
+    inner join users on users.id = temp.userID
     order by timestamp asc;`, [data['id']]
     ,function(error, rows, fields){
-    res.render("/room" + id, {data: rows});
+      console.log(rows);
+    res.render("/room", {data: rows});
   })
 });
 

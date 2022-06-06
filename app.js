@@ -178,13 +178,14 @@ app.post('/create_new_room', function(req, res){
 
 app.get('/room/:id', function(req, res){
   var id = req.params.id;
+  let data = req.body; 
 
   db.pool.query(
-    `select message, userID, timestamp from messages where roomID = (?)
-    inner join users on users.id = messages.userID;
-    order by timestamp asc;`, data[id]
+    `select message, userID, timestamp from messages where roomID = ?
+    inner join users on users.id = messages.userID
+    order by timestamp asc;`, [data['id']]
     ,function(error, rows, fields){
-    res.render("/room");
+    res.render("/room" + id, {data: rows});
   })
 });
 

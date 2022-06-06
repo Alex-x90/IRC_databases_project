@@ -30,7 +30,7 @@
             <td>{{this.userID}}</td>
             <td>{{this.roomID}}</td>
             <td>{{this.username}}</td>
-            <td><a href="">message</a></td>
+            <td><a href="/room/{{this.id}}">message</a></td>
             <td>
               <form class="remove_friend" method="POST" action="/remove_friend">
                 <input type="hidden" name="userID" class="userID" value="{{this.userID}}"/>

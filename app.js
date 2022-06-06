@@ -176,8 +176,9 @@ app.post('/create_new_room', function(req, res){
   }
 });
 
-app.get('/room', function(req, res){
-let query = `select message, userID, timestamp from messages where roomID = ${roomID}
+app.get('/room/:id', function(req, res){
+  var id = req.params.room;
+  let query = `select message, userID, timestamp from messages where roomID = ${roomID}
               inner join users on users.id = messages.userID;
               order by timestamp asc;`
 

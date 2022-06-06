@@ -1,10 +1,10 @@
 <div>
-     
+
     <h1> {{this.name}} </h1>
     <a> -- messages -- </a>
     <p></p>
     {{#each data}}
-        <p> {{this.userID}} : {{this.message}}, {{this.timestamp}} </p>
+        <p> {{this.username}} : {{this.message}}  , {{this.timestamp}} </p>
     {{/each}}
 
     <form id="send_message" method="POST" action="/room/">

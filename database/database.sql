@@ -24,8 +24,8 @@ create table messages(
   userID int(11) not null,
   foreign key (userID) references users(id),
   roomID int(11) not null,
-  foreign key (roomID) references rooms(id),
-  timestamp date not null
+  foreign key (roomID) references rooms(id) on delete cascade,
+  timestamp datetime not null
 );
 
 create table friends(
@@ -34,7 +34,7 @@ create table friends(
   userID2 int(11) not null,
   foreign key (userID2) references users(id),
   roomID int(11) not null,
-  foreign key (roomID) references rooms(id),
+  foreign key (roomID) references rooms(id) on delete cascade,
   constraint pk primary key (userID1, userID2),
   check (userID1 < userID2)    -- make it so there can only be 1 unique permutation of any 2 userIDs
 );
@@ -48,9 +48,9 @@ insert into rooms (name, creationDate) values ("Databases", "2022-03-29");
 insert into rooms (name, creationDate) values ("Private message", "2022-05-01");
 insert into rooms (name, creationDate) values ("Private message", "2022-05-05");
 
-insert into messages (message, userID, roomID, timestamp) values ("Databases is a great class!", 1, 1,now());
-insert into messages (message, userID, roomID, timestamp) values ("It is only game, why you have to be mad.", 4, 2,now());
-insert into messages (message, userID, roomID, timestamp) values ("E", 2, 3,now());
+insert into messages (message, userID, roomID, timestamp) values ("Databases is a great class!", 1, 1, now());
+insert into messages (message, userID, roomID, timestamp) values ("It is only game, why you have to be mad.", 4, 2, now());
+insert into messages (message, userID, roomID, timestamp) values ("E", 2, 3, now());
 
 insert into friends (userID1, userID2, roomID) values (3,4,2);
 insert into friends (userID1, userID2, roomID) values (2,4,3);

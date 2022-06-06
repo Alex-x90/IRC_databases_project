@@ -44,7 +44,7 @@ app.get('/friends', function(req, res){
 
 
 app.get('/rooms', function(req, res){
-  let query = "select id, name, DATE_FORMAT(creationDate,'%m-%d-%y') as creationDate from rooms order by id asc;"
+  let query = `select id, name, DATE_FORMAT(creationDate,'%m-%d-%y') as creationDate from rooms where name <> "Private message" order by id asc;`
 
   db.pool.query(query, function(error, rows, fields){
     res.render('rooms', {data: rows});
@@ -56,7 +56,7 @@ app.post('/rooms', function(req, res){
   let data = req.body;
 
   db.pool.query(
-    `select id, name, DATE_FORMAT(creationDate,'%m-%d-%y') as creationDate from rooms where name like ? order by id asc;`, [`%${data['room_name']}%`],
+    `select id, name, DATE_FORMAT(creationDate,'%m-%d-%y') as creationDate from rooms where name like ? and name <> "Private message" order by id asc;`, [`%${data['room_name']}%`],
     function(error, rows, fields){
       res.render('rooms', {data: rows});
   })
@@ -104,7 +104,7 @@ app.post('/remove_friend', function(req, res){
   let data = req.body;
 
   db.pool.query(
-    `delete from friends where userID1 = ? and userID2 = ?;`, [Math.min(data['userID'], currentUser), Math.max(data['userID'], currentUser)],
+    `delete from rooms where id = (select roomID from friends where userID1 = ? and userID2 = ?);`, [Math.min(data['userID'], currentUser), Math.max(data['userID'], currentUser)],
     function(error, rows, fields){
       res.redirect('/friends');
   })
@@ -184,7 +184,8 @@ app.get('/room/:id', function(req, res){
     inner join users on users.id = temp.userID
     order by timestamp asc;`, [id]
     ,function(error, rows, fields){
-    res.render("room", {data: rows});
+      res.render("room", {data: rows});
+
   })
 });
 

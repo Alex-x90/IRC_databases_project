@@ -1,7 +1,11 @@
 <div>
-    <h1>room name</h1>
+     
+    <h1> {{this.name}} </h1>
+    <a> display messages here </a>
 
-    <a> display messages here</a>
+    {{#each data}}
+        <p> {{this.userID}} : {{this.message}}, {{this.timestamp}} </p>
+    {{/each}}
 
     <input type="text"></input>
     <button type="text">send</button>

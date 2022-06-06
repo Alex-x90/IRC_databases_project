@@ -176,6 +176,16 @@ app.post('/create_new_room', function(req, res){
   }
 });
 
+app.get('/room', function(req, res){
+let query = `select message, userID, timestamp from messages where roomID = ${roomID}
+              inner join users on users.id = messages.userID;
+              order by timestamp asc;`
+
+    db.pool.query(query, function(error, rows, fields){
+      res.render('room', {data: rows});
+    })
+});
+
 app.get('*', function (req, res) {
   res.status(404).render('404', {
     page: req.url

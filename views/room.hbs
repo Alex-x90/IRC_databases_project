@@ -1,12 +1,16 @@
 <div>
 
     <h1> {{this.name}} </h1>
-    <a> display messages here </a>
-
+    <a> -- messages -- </a>
+    <p></p>
     {{#each data}}
         <p> {{this.username}} : {{this.message}}  , {{this.timestamp}} </p>
     {{/each}}
 
-    <input type="text"></input>
-    <button type="text">send</button>
+    <form id="send_message" method="POST" action="/room/">
+        <label for="message"> message: </label>
+        <input type="hidden" name="roomID" id="roomID" value="{{data.[0].roomID}}">
+        <input type="text" name="message" id="message">
+        <input type="submit" value="send"/>
+    </form>
 </div>

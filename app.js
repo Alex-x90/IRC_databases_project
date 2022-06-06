@@ -180,12 +180,28 @@ app.get('/room/:id', function(req, res){
   var id = req.params.id;
 
   db.pool.query(
-    `select * from(select message, userID, timestamp from messages where roomID = ?) temp
+    `select * from(select message, userID, timestamp, roomID from messages where roomID = ?) temp
     inner join users on users.id = temp.userID
     order by timestamp asc;`, [id]
     ,function(error, rows, fields){
       res.render("room", {data: rows});
+
   })
+});
+
+app.post('/room', function(req, res){
+  let data = req.body;
+
+  // only create room if a name was entered
+  console.log(data); 
+  db.pool.query(
+    `insert into messages (message, userID, roomID, timestamp) values (?, ?, ?, now()); `, [data['message'], currentUser, data['roomID']]
+     ,function(error, rows, fields){
+       console.log(error, rows);
+      db.pool.query(`select roomID from messages where id = ?;`,[rows.insertId], function(error, rows, fields){
+        res.redirect("/room/" + rows[0]['roomID']);
+      })
+    })
 });
 
 app.get('*', function (req, res) {

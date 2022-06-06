@@ -35,7 +35,8 @@ create table friends(
   foreign key (userID2) references users(id),
   roomID int(11) not null,
   foreign key (roomID) references rooms(id),
-  constraint pk primary key (userID1, userID2)
+  constraint pk primary key (userID1, userID2),
+  check (userID1 < userID2)    -- make it so there can only be 1 unique permutation of any 2 userIDs
 );
 
 insert into users (username, email, password) values ("mynamejeff", "JefferyJ@gmail.com", "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08");
@@ -51,7 +52,7 @@ insert into messages (message, userID, roomID, timestamp) values ("Databases is 
 insert into messages (message, userID, roomID, timestamp) values ("It is only game, why you have to be mad.", 4, 2,now());
 insert into messages (message, userID, roomID, timestamp) values ("E", 2, 3,now());
 
-insert into friends (userID1, userID2, roomID) values (4,3,2);
+insert into friends (userID1, userID2, roomID) values (3,4,2);
 insert into friends (userID1, userID2, roomID) values (2,4,3);
 
 describe users;

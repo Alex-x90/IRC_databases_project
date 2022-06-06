@@ -1,14 +1,49 @@
 <div>
-    <h1>manage friends</h1>
+    <h1>Add friends</h1>
 
-    <div class="addfriend">
-        <p> search friend by name: </p>
-        <input type="text"></input>
-        <button type="button">add</button>
-    </div>
-    <div class="addfriend">
-        <p> search by user ID: </p>
-        <input type="text"></input>
-        <button type="button">add</button>
-    </div>
+    <form id="search_users_name" method="POST" action="/newfriends">
+      <label for="username">Username: </label>
+      <input type="text" name="username" id="username">
+      <input type="submit" value="search"/>
+    </form>
+
+    <form id="search_users_id" method="POST" action="/newfriends">
+      <label for="id">ID:</label>
+      <input type="text" name="id" id="id">
+      <input type="submit" value="search"/>
+    </form>
+
+    {{#if data}}
+      {{!-- Create a table --}}
+      <table>
+        {{!-- Header section --}}
+        <thead>
+            {{!-- For just the first row, we print each key of the row object as a header cell so we
+            know what each column means when the page renders --}}
+            <tr>
+                <th>userID</th>
+                <th>username</th>
+                <th>add friend</th>
+            </tr>
+        </thead>
+
+        {{!-- Body section --}}
+        <tbody>
+            {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
+            {{#each data}}
+            <tr>
+                <td>{{this.id}}</td>
+                <td>{{this.username}}</td>
+                <td>
+                  <form class="add_friend" method="POST" action="/add_friend">
+                    <input type="hidden" name="id" class="id" value="{{this.id}}"/>
+                    <input type="submit" value="add"/>
+                  </form>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+      </table>
+    {{/if}}
+
 </div>

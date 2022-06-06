@@ -1,3 +1,8 @@
 .room-container{
   background-color: lightGrey;
 }
+
+.room-list {
+    width: 25%; 
+    border-style: solid; 
+}

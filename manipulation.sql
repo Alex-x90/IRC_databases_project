@@ -13,10 +13,10 @@ inner join users on users.id = friends.userID;
 delete from friends where userID1 = $userID1 and userID2 = $userID2;
 
 -- get rooms
-select id, name, DATE_FORMAT(creationDate,'%m-%d-%y') as creationDate from rooms order by id asc;
+select id, name, DATE_FORMAT(creationDate,'%m-%d-%y') as creationDate from rooms where name <> "Private message" order by id asc;
 
 -- search for room by name
-select id, name, DATE_FORMAT(creationDate,'%m-%d-%y') as creationDate from rooms where name like '%$searchString%' order by id asc;
+select id, name, DATE_FORMAT(creationDate,'%m-%d-%y') as creationDate from rooms where name like '%$searchString%' and name <> "Private message" order by id asc;
 
 -- search for user by name
 select username from users where username like '%$searchString%' order by username asc;

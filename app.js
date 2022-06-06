@@ -44,7 +44,7 @@ app.get('/friends', function(req, res){
 
 
 app.get('/rooms', function(req, res){
-  let query = "select id, name, DATE_FORMAT(creationDate,'%m-%d-%y') as creationDate from rooms order by id asc;"
+  let query = `select id, name, DATE_FORMAT(creationDate,'%m-%d-%y') as creationDate from rooms where name <> "Private message" order by id asc;`
 
   db.pool.query(query, function(error, rows, fields){
     res.render('rooms', {data: rows});
@@ -56,7 +56,7 @@ app.post('/rooms', function(req, res){
   let data = req.body;
 
   db.pool.query(
-    `select id, name, DATE_FORMAT(creationDate,'%m-%d-%y') as creationDate from rooms where name like ? order by id asc;`, [`%${data['room_name']}%`],
+    `select id, name, DATE_FORMAT(creationDate,'%m-%d-%y') as creationDate from rooms where name like ? and name <> "Private message" order by id asc;`, [`%${data['room_name']}%`],
     function(error, rows, fields){
       res.render('rooms', {data: rows});
   })

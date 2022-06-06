@@ -42,6 +42,18 @@ app.get('/friends', function(req, res){
   })
 });
 
+app.post('/friends', function(req, res){
+  let data = req.body;
+
+  db.pool.query(`select * from (select userID1 as userID, roomID from friends where userID2 = ${currentUser}
+    union
+    select userID2 as userID, roomID from friends where userID1 = ${currentUser}) friends
+    inner join users on users.id = friends.userID and username like ?;`, [`%${data['username']}%`]
+    ,function(error, rows, fields){
+      res.render('friends', {data: rows});
+    })
+});
+
 
 app.get('/rooms', function(req, res){
   let query = `select id, name, DATE_FORMAT(creationDate,'%m-%d-%y') as creationDate from rooms where name <> "Private message" order by id asc;`

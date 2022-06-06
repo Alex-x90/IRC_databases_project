@@ -1,9 +1,15 @@
 <div>
   <h1>friends list</h1>
   <div class="chat-container">
-    <label for="chat-box"></label>
+    <!-- <label for="chat-box"></label>
     <input type="text" id="chat-box"></input>
-    <button type="button" id="send-chat" class="send-button">search</button>
+    <button type="button" id="send-chat" class="send-button">search</button> -->
+
+    <form id="search_users_name" method="POST" action="/friends">
+      <label for="username">Username: </label>
+      <input type="text" name="username" id="username">
+      <input type="submit" value="search"/>
+    </form>
   </div>
   <br>
 

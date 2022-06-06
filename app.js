@@ -104,7 +104,7 @@ app.post('/remove_friend', function(req, res){
   let data = req.body;
 
   db.pool.query(
-    `delete from friends where userID1 = ? and userID2 = ?;`, [Math.min(data['userID'], currentUser), Math.max(data['userID'], currentUser)],
+    `delete from rooms where id = (select roomID from friends where userID1 = ? and userID2 = ?);`, [Math.min(data['userID'], currentUser), Math.max(data['userID'], currentUser)],
     function(error, rows, fields){
       res.redirect('/friends');
   })

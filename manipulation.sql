@@ -46,7 +46,11 @@ insert into rooms (name, creationDate) values ($newRoomName, now());
 insert into messages (message, userID, roomID, timestamp) values ($msg, $myUserId, $roomId, now());
 
 -- get messages from room for specific scroll amount (this is an ideal, our implementation likely won't be advanced enough to have dynamic loading like this)
-select message, userID, timestamp from messages where (id between $startPageMsgId and $endPageMsgId) and roomID = $roomId
+select message, userID, timestamp from messages where (id between $startPageMsgId and $endPageMsgId) and roomID = $roomID
+order by timestamp asc;
+-- actual select that we're using, more basic
+select * from(select message, userID, timestamp from messages where roomID = $roomID) temp
+inner join users on users.id = temp.userID
 order by timestamp asc;
 
 -- create a new account

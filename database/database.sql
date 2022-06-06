@@ -24,7 +24,7 @@ create table messages(
   userID int(11) not null,
   foreign key (userID) references users(id),
   roomID int(11) not null,
-  foreign key (roomID) references rooms(id),
+  foreign key (roomID) references rooms(id) on delete cascade,
   timestamp date not null
 );
 
@@ -34,7 +34,7 @@ create table friends(
   userID2 int(11) not null,
   foreign key (userID2) references users(id),
   roomID int(11) not null,
-  foreign key (roomID) references rooms(id),
+  foreign key (roomID) references rooms(id) on delete cascade,
   constraint pk primary key (userID1, userID2),
   check (userID1 < userID2)    -- make it so there can only be 1 unique permutation of any 2 userIDs
 );
